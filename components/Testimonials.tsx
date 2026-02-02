@@ -6,7 +6,7 @@ const testimonials = [
   {
     name: "Jerina Ahmeda",
     role: "MSA Design Studio",
-    content: "*“Working with Karao Digital has been a smooth and rewarding experience. From understanding our design approach to translating it into clear digital communication, their team handled everything with professionalism and creativity.
+    content: “Working with Karao Digital has been a smooth and rewarding experience. From understanding our design approach to translating it into clear digital communication, their team handled everything with professionalism and creativity.
 
 Karao Digital helped us shape our online presence from the ground up, ensuring our work, collaborations, and brand story were presented thoughtfully and effectively. Their attention to detail, timely execution, and collaborative mindset made the entire process seamless.
 
