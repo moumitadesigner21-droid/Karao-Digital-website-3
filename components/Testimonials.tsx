@@ -4,9 +4,13 @@ import { Star, Quote } from 'lucide-react';
 
 const testimonials = [
   {
-    name: "Sarah Jenkins",
-    role: "Founder at BloomTech",
-    content: "Karau Digital turned our napkin sketch into a fully functional MVP in record time. Their AI automation integration saved us roughly 20 hours of manual work per week.",
+    name: "Jerina Ahmeda",
+    role: "MSA Design Studio",
+    content: "*“Working with Karao Digital has been a smooth and rewarding experience. From understanding our design approach to translating it into clear digital communication, their team handled everything with professionalism and creativity.
+
+Karao Digital helped us shape our online presence from the ground up, ensuring our work, collaborations, and brand story were presented thoughtfully and effectively. Their attention to detail, timely execution, and collaborative mindset made the entire process seamless.
+
+We truly appreciate their dedication and would gladly recommend Karao Digital to anyone looking for reliable and creative digital solutions.”*.",
     avatar: "https://i.pravatar.cc/150?u=sarah",
     rating: 5
   },
