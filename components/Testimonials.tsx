@@ -28,32 +28,33 @@ avatar: "https://i.pravatar.cc/150?u=rohan",
     rating: 5
   },
   {
-    name: "Elena Rodriguez",
-    role: "Product Lead at Vibe",
-    content: "I've worked with many agencies, but Karau's low-code approach combined with their deep engineering knowledge is unique. They don't just build; they strategize.",
-    avatar: "https://i.pravatar.cc/150?u=elena",
+    name: "Ename: "Vikram Iyer",
+role: "Engineering Head, Confidential Client",
+content: "The custom software they built for our logistics chain is a masterpiece of efficiency. It's clean, scalable, and exactly what we needed to move to the next level.",
+avatar: "https://i.pravatar.cc/150?u=vikram",
+,
     rating: 5
   },
   {
-    name: "David Smith",
-    role: "CEO, Spark AI",
-    content: "The speed of execution is mind-blowing. We had our core features live in 7 days, allowing us to pivot based on real user feedback almost immediately.",
-    avatar: "https://i.pravatar.cc/150?u=david",
-    rating: 5
+    name: "name: "Ankit Sharma",
+role: "Operations Lead, Private Organization",
+content: "The custom software they built for our logistics chain is a masterpiece of efficiency. It's clean, scalable, and exactly what we needed to move to the next level.",
+avatar: "https://i.pravatar.cc/150?u=ankit",
+
   },
   {
-    name: "Aisha Khan",
-    role: "Director of Operations",
-    content: "Their AI agents are now handling 60% of our customer inquiries. The ROI was visible within the first month of deployment. Truly transformative.",
-    avatar: "https://i.pravatar.cc/150?u=aisha",
-    rating: 5
+    name: "name: "Neha Verma",
+role: "Product Manager, Confidential Client",
+content: "The custom software they built for our logistics chain is a masterpiece of efficiency. It's clean, scalable, and exactly what we needed to move to the next level.",
+avatar: "https://i.pravatar.cc/150?u=neha",
+
   },
   {
-    name: "James Wilson",
-    role: "Co-Founder, Lift Logistics",
-    content: "Clean code, brilliant design, and a team that actually understands business goals. Karau Digital is our go-to partner for all things digital.",
-    avatar: "https://i.pravatar.cc/150?u=james",
-    rating: 5
+    name: "name: "Siddharth Rao",
+role: "Founder, Independent Venture",
+content: "The custom software they built for our logistics chain is a masterpiece of efficiency. It's clean, scalable, and exactly what we needed to move to the next level.",
+avatar: "https://i.pravatar.cc/150?u=siddharth",
+
   }
 ];
 
