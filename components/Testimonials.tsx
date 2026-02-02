@@ -15,7 +15,11 @@ We truly appreciate their dedication and would gladly recommend Karao Digital to
     rating: 5
   },
   {
-    name: "Marcus Chen",
+    name: " "Aarav Mehta",
+role: "Technical Lead, Private Firm",
+content: "The custom software they built for our logistics chain is a masterpiece of efficiency. It's clean, scalable, and exactly what we needed to move to the next level.",
+avatar: "https://i.pravatar.cc/150?u=aarav",
+",
     role: "CTO, Nexus Systems",
     content: "The custom software they built for our logistics chain is a masterpiece of efficiency. It's clean, scalable, and exactly what we needed to move to the next level.",
     avatar: "https://i.pravatar.cc/150?u=marcus",
