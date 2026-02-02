@@ -97,7 +97,7 @@ const Testimonials: React.FC = () => {
             <span className="text-cyan-500">of digital leaders</span>
           </h2>
           <p className="text-slate-500 font-medium max-w-2xl mx-auto text-lg leading-relaxed">
-            We don't just build products; we build partnerships. Join hundreds of satisfied founders who scaled their vision with Karau.
+            We don't just build products; we build partnerships. Join hundreds of satisfied founders who scaled their vision with Karao.
           </p>
         </div>
 
