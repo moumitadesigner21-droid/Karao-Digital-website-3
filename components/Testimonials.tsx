@@ -22,7 +22,7 @@ avatar: "https://i.pravatar.cc/150?u=aarav",
 ",
     role: "Cname: "Rohan Kulkarni",
 role: "Co-founder, Early-Stage Startup",
-content: "The custom software they built for our logistics chain is a masterpiece of efficiency. It's clean, scalable, and exactly what we needed to move to the next level.",
+content: "What stood out was their ability to simplify complex processes. The software feels thoughtfully built, easy to scale, and has helped us streamline operations across teams",
 avatar: "https://i.pravatar.cc/150?u=rohan",
 ,
     rating: 5
