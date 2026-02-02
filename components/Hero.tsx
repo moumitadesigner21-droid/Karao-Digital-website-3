@@ -26,7 +26,7 @@ const Hero: React.FC = () => {
         <p className="max-w-3xl mx-auto text-slate-500 text-lg md:text-xl font-medium mb-12 leading-relaxed">
           Specializing in <span className="text-slate-900 font-bold underline decoration-cyan-400 decoration-2 underline-offset-4">MVP Development</span>, 
           AI Automation, and Custom Software. <br className="hidden md:block"/>
-          Karau Digital turns complex problems into scalable digital products.
+          Karao Digital turns complex problems into scalable digital products.
         </p>
 
         {/* Floating Service Tags */}
