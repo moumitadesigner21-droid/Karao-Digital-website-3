@@ -30,7 +30,7 @@ avatar: "https://i.pravatar.cc/150?u=rohan",
   {
     name: "Ename: "Vikram Iyer",
 role: "Engineering Head, Confidential Client",
-content: "The custom software they built for our logistics chain is a masterpiece of efficiency. It's clean, scalable, and exactly what we needed to move to the next level.",
+content: "The solution delivered has brought clarity and consistency to our operations. It has reduced manual effort and improved coordination across teams.",
 avatar: "https://i.pravatar.cc/150?u=vikram",
 ,
     rating: 5
@@ -38,21 +38,21 @@ avatar: "https://i.pravatar.cc/150?u=vikram",
   {
     name: "name: "Ankit Sharma",
 role: "Operations Lead, Private Organization",
-content: "The custom software they built for our logistics chain is a masterpiece of efficiency. It's clean, scalable, and exactly what we needed to move to the next level.",
+content: "A well-executed solution that improved our workflows and made scaling much easier. Reliable, clean, and thoughtfully built.",
 avatar: "https://i.pravatar.cc/150?u=ankit",
 
   },
   {
     name: "name: "Neha Verma",
 role: "Product Manager, Confidential Client",
-content: "The custom software they built for our logistics chain is a masterpiece of efficiency. It's clean, scalable, and exactly what we needed to move to the next level.",
+content: "The collaboration was effortless from start to finish. They were responsive, detail-oriented, and delivered a solution that genuinely supports our operational goals.",
 avatar: "https://i.pravatar.cc/150?u=neha",
 
   },
   {
     name: "name: "Siddharth Rao",
 role: "Founder, Independent Venture",
-content: "The custom software they built for our logistics chain is a masterpiece of efficiency. It's clean, scalable, and exactly what we needed to move to the next level.",
+content: "They delivered exactly what was promised, without unnecessary complexity. The solution feels dependable and ready to grow with our business.",,
 avatar: "https://i.pravatar.cc/150?u=siddharth",
 
   }
