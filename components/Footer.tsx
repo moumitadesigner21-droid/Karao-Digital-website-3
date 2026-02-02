@@ -44,7 +44,7 @@ const Footer: React.FC = () => {
                 into a high-performance reality?
               </h2>
               <p className="text-cyan-100 mb-10 text-lg opacity-90 leading-relaxed">
-                Skip the months of planning. Book a free 30-minute strategy session <br className="hidden lg:block"/> 
+                 Book a free 30-minute strategy session <br className="hidden lg:block"/> 
                 and let's discuss how we can launch your MVP in record time.
               </p>
 
@@ -81,7 +81,7 @@ const Footer: React.FC = () => {
           {/* Brand Info */}
           <div className="lg:col-span-2">
             <div className="flex items-center mb-8">
-              <span className="text-3xl font-brand text-slate-900">Karau</span>
+              <span className="text-3xl font-brand text-slate-900">Karao</span>
             </div>
             <p className="text-slate-500 font-medium leading-relaxed max-w-sm mb-10">
               Empowering visionary founders with AI-driven engineering, rapid MVP development, and high-performance software solutions built for the next generation of digital leaders.
@@ -140,7 +140,7 @@ const Footer: React.FC = () => {
                 <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
                   <Mail className="w-4 h-4" />
                 </div>
-                <span className="font-bold text-slate-700">hello@karau.digital</span>
+                <span className="font-bold text-slate-700">hello@karao.digital</span>
               </li>
             </ul>
           </div>
@@ -150,7 +150,7 @@ const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="py-8 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-slate-400 font-medium text-sm">
-            © {new Date().getFullYear()} Karau Digital. All rights reserved. Built with precision and purpose.
+            © {new Date().getFullYear()} Karao Digital. All rights reserved. Built with precision and purpose.
           </p>
           <div className="flex flex-wrap justify-center gap-8 text-sm font-bold text-slate-400 uppercase tracking-widest">
             <a href="#" className="hover:text-cyan-600 transition-colors">Privacy Policy</a>
