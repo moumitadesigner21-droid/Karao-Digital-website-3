@@ -37,7 +37,7 @@ const Field: React.FC<{ label: string; error?: string; children: React.ReactNode
 
 /* ─── INPUT CLASSES ──────────────────────────────────────────────── */
 const inputCls = (hasError: boolean) =>
-  `w-full px-4 py-3 rounded-xl text-sm text-white placeholder-slate-600 outline-none transition-all duration-200 ${
+  `w-full px-3.5 py-2 rounded-xl text-sm text-white placeholder-slate-600 outline-none transition-all duration-200 ${
     hasError
       ? 'border border-red-500/60 bg-red-500/10'
       : 'border border-white/10 bg-white/5 focus:border-[#00BFCB]/50 focus:bg-white/[0.08]'
@@ -206,27 +206,24 @@ const EnquiryModal: React.FC<Props> = ({ isOpen, enquiryType, onClose }) => {
           <form onSubmit={handleSubmit} noValidate className="flex flex-col min-h-0 flex-1">
 
             {/* ── Scrollable content ── */}
-            <div className="flex-1 overflow-y-auto overscroll-contain px-7 pt-7 pb-2 sm:px-8 sm:pt-8 relative z-10">
+            <div className="flex-1 overflow-y-auto overscroll-contain px-5 pt-5 pb-2 sm:px-6 sm:pt-6 relative z-10">
 
               {/* Header */}
-              <div className="mb-6 pr-8">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-4 border border-white/10 bg-white/5 rounded-full">
+              <div className="mb-4 pr-8">
+                <div className="inline-flex items-center gap-2 px-3 py-1 mb-2.5 border border-white/10 bg-white/5 rounded-full">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#00BFCB] animate-pulse" />
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                     Get In Touch
                   </span>
                 </div>
-                <h2 className="text-2xl font-extrabold text-white leading-tight">
+                <h2 className="text-xl font-extrabold text-white leading-tight">
                   Let's build something{' '}
                   <span className="text-[#00BFCB]">great</span> together
                 </h2>
-                <p className="text-slate-400 text-sm mt-1.5">
-                  We'll get back to you within 24 hours.
-                </p>
               </div>
 
               {/* Fields */}
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <Field label="Full Name" error={errors.name}>
                   <input
                     ref={firstInputRef}
@@ -267,7 +264,7 @@ const EnquiryModal: React.FC<Props> = ({ isOpen, enquiryType, onClose }) => {
                     placeholder="Tell us what you're looking for…"
                     value={form.enquiry}
                     onChange={handleChange}
-                    rows={3}
+                    rows={2}
                     className={`${inputCls(!!errors.enquiry)} resize-none`}
                   />
                 </Field>
@@ -283,7 +280,7 @@ const EnquiryModal: React.FC<Props> = ({ isOpen, enquiryType, onClose }) => {
 
             {/* ── Sticky submit footer — never scrolls away ── */}
             <div
-              className="px-7 pt-4 pb-7 sm:px-8 sm:pb-8 flex-shrink-0 relative z-10"
+              className="px-5 pt-3 pb-5 sm:px-6 sm:pb-6 flex-shrink-0 relative z-10"
               style={{
                 borderTop: '1px solid rgba(255,255,255,0.06)',
                 background: 'linear-gradient(to bottom, rgba(15,23,42,0.6) 0%, #0f172a 30%)',
@@ -292,7 +289,7 @@ const EnquiryModal: React.FC<Props> = ({ isOpen, enquiryType, onClose }) => {
               <button
                 type="submit"
                 disabled={status === 'submitting'}
-                className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-full
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-full
                            text-sm font-bold text-white transition-all duration-300
                            disabled:opacity-60 hover:brightness-110 active:scale-[0.98]"
                 style={{
@@ -313,7 +310,7 @@ const EnquiryModal: React.FC<Props> = ({ isOpen, enquiryType, onClose }) => {
                 )}
               </button>
 
-              <p className="text-center text-slate-600 text-[10px] mt-3">
+              <p className="text-center text-slate-600 text-[10px] mt-2">
                 By submitting, you agree to be contacted by Karao.Digital.
               </p>
             </div>
