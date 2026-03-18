@@ -273,20 +273,20 @@ const Hero: React.FC = () => {
           </p>
 
           <div className={`flex flex-col sm:flex-row gap-4 mb-16 transition-all duration-1000 delay-300 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-            <button
-              onClick={() => document.getElementById('case-studies-anchor')?.scrollIntoView({ behavior: 'smooth' })}
+            <a
+              href="#case-studies"
               className="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 rounded-full font-bold transition-all flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_40px_rgba(0,191,203,0.4)] hover:-translate-y-1 hover:bg-[#e0fafb] interactive-element"
             >
               Initialize Project
               <ChevronRight className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => document.getElementById('services-anchor')?.scrollIntoView({ behavior: 'smooth' })}
+            </a>
+            <a
+              href="#services"
               className="w-full sm:w-auto px-8 py-4 bg-transparent text-white border border-white/20 rounded-full font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-3 interactive-element"
             >
               <Zap className="w-5 h-5" style={{ color: '#C4A028' }} />
               Explore Capabilities
-            </button>
+            </a>
           </div>
 
           <div className={`flex items-center gap-8 border-t border-white/10 pt-8 transition-all duration-1000 delay-500 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
