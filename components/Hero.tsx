@@ -274,7 +274,7 @@ const Hero: React.FC = () => {
 
           <div className={`flex flex-col sm:flex-row gap-4 mb-16 transition-all duration-1000 delay-300 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
             <button
-              onClick={() => document.getElementById('case-studies')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('case-studies-anchor')?.scrollIntoView({ behavior: 'smooth' })}
               className="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 rounded-full font-bold transition-all flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_40px_rgba(0,191,203,0.4)] hover:-translate-y-1 hover:bg-[#e0fafb] interactive-element"
             >
               Initialize Project
