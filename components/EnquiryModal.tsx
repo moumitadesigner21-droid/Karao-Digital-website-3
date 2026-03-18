@@ -206,48 +206,46 @@ const EnquiryModal: React.FC<Props> = ({ isOpen, enquiryType, onClose }) => {
           <form onSubmit={handleSubmit} noValidate className="flex flex-col min-h-0 flex-1">
 
             {/* ── Scrollable content ── */}
-            <div className="flex-1 overflow-y-auto overscroll-contain px-5 pt-5 pb-2 sm:px-6 sm:pt-6 relative z-10">
+            <div className="flex-1 overflow-y-auto overscroll-contain px-5 pt-4 pb-2 sm:px-6 relative z-10">
 
               {/* Header */}
-              <div className="mb-4 pr-8">
-                <div className="inline-flex items-center gap-2 px-3 py-1 mb-2.5 border border-white/10 bg-white/5 rounded-full">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00BFCB] animate-pulse" />
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    Get In Touch
-                  </span>
-                </div>
-                <h2 className="text-xl font-extrabold text-white leading-tight">
+              <div className="mb-3 pr-8">
+                <h2 className="text-lg font-extrabold text-white leading-tight">
                   Let's build something{' '}
                   <span className="text-[#00BFCB]">great</span> together
                 </h2>
+                <p className="text-slate-500 text-xs mt-0.5">We'll get back to you within 24 hours.</p>
               </div>
 
               {/* Fields */}
-              <div className="space-y-3">
-                <Field label="Full Name" error={errors.name}>
-                  <input
-                    ref={firstInputRef}
-                    name="name"
-                    type="text"
-                    placeholder="Your full name"
-                    value={form.name}
-                    onChange={handleChange}
-                    className={inputCls(!!errors.name)}
-                  />
-                </Field>
+              <div className="space-y-2.5">
 
-                <Field label="Phone Number" error={errors.phone}>
-                  <input
-                    name="phone"
-                    type="tel"
-                    placeholder="+91 98765 43210"
-                    value={form.phone}
-                    onChange={handleChange}
-                    className={inputCls(!!errors.phone)}
-                  />
-                </Field>
+                {/* Name + Phone — side by side */}
+                <div className="grid grid-cols-2 gap-2.5">
+                  <Field label="Name" error={errors.name}>
+                    <input
+                      ref={firstInputRef}
+                      name="name"
+                      type="text"
+                      placeholder="Full name"
+                      value={form.name}
+                      onChange={handleChange}
+                      className={inputCls(!!errors.name)}
+                    />
+                  </Field>
+                  <Field label="Phone" error={errors.phone}>
+                    <input
+                      name="phone"
+                      type="tel"
+                      placeholder="+91 98765 43210"
+                      value={form.phone}
+                      onChange={handleChange}
+                      className={inputCls(!!errors.phone)}
+                    />
+                  </Field>
+                </div>
 
-                <Field label="Email Address" error={errors.email}>
+                <Field label="Email" error={errors.email}>
                   <input
                     name="email"
                     type="email"
@@ -270,8 +268,8 @@ const EnquiryModal: React.FC<Props> = ({ isOpen, enquiryType, onClose }) => {
                 </Field>
 
                 {status === 'error' && (
-                  <div className="flex items-center gap-2 text-red-400 text-sm p-3 rounded-xl bg-red-500/10 border border-red-500/20">
-                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <div className="flex items-center gap-2 text-red-400 text-xs p-2.5 rounded-xl bg-red-500/10 border border-red-500/20">
+                    <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
                     Something went wrong. Please try again.
                   </div>
                 )}
@@ -280,7 +278,7 @@ const EnquiryModal: React.FC<Props> = ({ isOpen, enquiryType, onClose }) => {
 
             {/* ── Sticky submit footer — never scrolls away ── */}
             <div
-              className="px-5 pt-3 pb-5 sm:px-6 sm:pb-6 flex-shrink-0 relative z-10"
+              className="px-5 pt-2.5 pb-4 sm:px-6 sm:pb-5 flex-shrink-0 relative z-10"
               style={{
                 borderTop: '1px solid rgba(255,255,255,0.06)',
                 background: 'linear-gradient(to bottom, rgba(15,23,42,0.6) 0%, #0f172a 30%)',
