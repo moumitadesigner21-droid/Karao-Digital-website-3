@@ -33,6 +33,7 @@ const App: React.FC = () => {
       <main className="relative z-10">
         <Hero />
         <LazySection height="700px"><BentoGrid /></LazySection>
+        <div id="services-anchor" />
         <LazySection height="1000px"><Services /></LazySection>
         <LazySection height="900px"><Process /></LazySection>
         <div id="case-studies-anchor" />
