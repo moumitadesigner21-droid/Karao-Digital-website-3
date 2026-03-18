@@ -1,23 +1,46 @@
-
-import React from 'react';
+import React, { Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import BentoGrid from './components/BentoGrid';
-import Services from './components/Services';
-import Testimonials from './components/Testimonials';
-import Footer from './components/Footer';
+import CustomCursor from './components/CustomCursor';
+import InteractiveBackground from './components/InteractiveBackground';
+
+// Below-fold sections — lazy-loaded so they don't inflate the initial bundle
+const BentoGrid = React.lazy(() => import('./components/BentoGrid'));
+const Services = React.lazy(() => import('./components/Services'));
+const Process = React.lazy(() => import('./components/Process'));
+
+const CaseStudies = React.lazy(() => import('./components/CaseStudies'));
+const Testimonials = React.lazy(() => import('./components/Testimonials'));
+const Footer = React.lazy(() => import('./components/Footer'));
+
+// Tells the browser to skip layout/paint for off-screen sections.
+// containIntrinsicSize is an estimated height so the scrollbar stays stable.
+const LazySection: React.FC<{ children: React.ReactNode; height?: string }> = ({
+  children,
+  height = '800px',
+}) => (
+  <div style={{ contentVisibility: 'auto', containIntrinsicSize: `0 ${height}` }}>
+    <Suspense fallback={null}>{children}</Suspense>
+  </div>
+);
 
 const App: React.FC = () => {
   return (
-    <div className="min-h-screen selection:bg-cyan-500/30">
+    <div className="min-h-screen bg-transparent text-slate-50 selection:bg-cyan-500/30 selection:text-white relative">
+      <CustomCursor />
+      <InteractiveBackground />
       <Navbar />
-      <main>
+      <main className="relative z-10">
         <Hero />
-        <BentoGrid />
-        <Services />
-        <Testimonials />
+        <LazySection height="700px"><BentoGrid /></LazySection>
+        <LazySection height="1000px"><Services /></LazySection>
+        <LazySection height="900px"><Process /></LazySection>
+        <LazySection height="1800px"><CaseStudies /></LazySection>
+        <LazySection height="900px"><Testimonials /></LazySection>
       </main>
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </div>
   );
 };

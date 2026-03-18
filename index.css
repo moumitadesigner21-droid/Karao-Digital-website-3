@@ -1,0 +1,449 @@
+@import "tailwindcss";
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #020617;
+    color: #f8fafc;
+    overflow-x: hidden;
+    cursor: none;
+}
+
+/* ============================================================
+   UTILITY / BRAND CLASSES  (previously in index.html <style>)
+   ============================================================ */
+
+.bg-noise {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.font-brand {
+    font-family: 'Pacifico', cursive;
+}
+
+.font-playfair {
+    font-family: 'Playfair Display', serif;
+}
+
+.bg-grid-pattern {
+    background-image: radial-gradient(rgba(148, 163, 184, 0.15) 1.5px, transparent 1.5px);
+    background-size: 44px 44px;
+}
+
+.text-gradient-teal {
+    background: linear-gradient(to right, #00BFCB, #00939E);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-gold {
+    background: linear-gradient(to right, #C4A028, #E8C040);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Dark Glassmorphism — blur reduced to 8px (was 16/20px), GPU cost cut ~60% */
+.glass-card {
+    background: rgba(20, 30, 48, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.glass-panel {
+    background: linear-gradient(145deg, rgba(20, 30, 48, 0.9), rgba(10, 15, 30, 0.95));
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+}
+
+/* ============================================================
+   SCROLL REVEAL  (previously in index.html <style>)
+   ============================================================ */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================================
+   GLOBAL ANIMATIONS  (previously in index.html <style>)
+   ============================================================ */
+
+@keyframes fadeInUpCustom {
+    0%   { opacity: 0; transform: translateY(40px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-testimonial {
+    animation: fadeInUpCustom 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+}
+
+@keyframes float {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.float-animation {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 40s linear infinite;
+    will-change: transform;
+}
+
+.animate-marquee:hover {
+    animation-play-state: paused;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { opacity: 0.5; }
+    50%       { opacity: 0.8; }
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 8s ease-in-out infinite;
+    will-change: opacity;
+}
+
+/* ============================================================
+   HERO COMPONENT  (previously inline <style> in Hero.tsx)
+   ============================================================ */
+
+@keyframes floatY {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-8px); }
+}
+
+.card-float         { animation: floatY 5s ease-in-out infinite; }
+.card-float-delayed { animation: floatY 6s ease-in-out 1.5s infinite; }
+
+@keyframes pulse-base {
+    0%   { transform: translateX(-50%) rotateX(75deg) scale(0.95); opacity: 0.8; }
+    100% { transform: translateX(-50%) rotateX(75deg) scale(1.05); opacity: 1; }
+}
+
+@keyframes dash {
+    to { stroke-dashoffset: 0; }
+}
+
+.hologram-stage {
+    position: absolute;
+    top: 50%; left: 65%;
+    transform: translate(-50%, -30%);
+    width: 800px;
+    height: 800px;
+    perspective: 1200px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.stage-floor {
+    position: absolute;
+    bottom: 0; left: 50%;
+    width: 1200px; height: 1200px;
+    margin-left: -600px;
+    background-image:
+        linear-gradient(to right, rgba(0, 191, 203, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 191, 203, 0.1) 1px, transparent 1px);
+    background-size: 60px 60px;
+    transform: rotateX(75deg) translateY(200px);
+    mask-image: radial-gradient(ellipse at center, black 10%, transparent 60%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 10%, transparent 60%);
+}
+
+.emitter {
+    position: absolute;
+    bottom: 20%; left: 50%;
+    transform: translateX(-50%) rotateX(75deg);
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #00BFCB 0%, transparent 70%);
+    box-shadow:
+        0 0 100px 50px rgba(0, 191, 203, 0.2),
+        inset 0 0 80px rgba(255, 255, 255, 0.5),
+        0 0 200px 100px rgba(196, 160, 40, 0.15);
+    border: 2px solid rgba(0, 191, 203, 0.5);
+    animation: pulse-base 4s infinite alternate ease-in-out;
+    mix-blend-mode: screen;
+}
+
+.light-cone {
+    position: absolute;
+    bottom: 25%; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 500px;
+    background: linear-gradient(to top, rgba(0, 191, 203, 0.1), transparent 80%);
+    clip-path: polygon(30% 100%, 70% 100%, 100% 0, 0 0);
+    mask-image: linear-gradient(to top, black, transparent);
+    -webkit-mask-image: linear-gradient(to top, black, transparent);
+    /* Reduced blur from 8px to 4px — halves GPU cost for this filter */
+    filter: blur(4px);
+    mix-blend-mode: color-dodge;
+}
+
+.orbits {
+    position: absolute;
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1000px; height: 500px;
+    z-index: 3;
+}
+
+.orbits path {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.7);
+    stroke-width: 1.5;
+    filter: drop-shadow(0 0 8px rgba(0, 191, 203, 0.5));
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: dash 8s linear infinite;
+}
+
+.orbits path:nth-child(2) {
+    stroke-width: 1;
+    stroke: #C4A028;
+    filter: drop-shadow(0 0 6px rgba(196, 160, 40, 0.6));
+    animation: dash 12s linear infinite reverse;
+}
+
+/* ============================================================
+   PROCESS COMPONENT  (previously inline <style> in Process.tsx)
+   ============================================================ */
+
+@keyframes stepPulse {
+    0%, 100% { box-shadow: 0 0 0 0 var(--glow); }
+    50%       { box-shadow: 0 0 0 14px transparent; }
+}
+
+.step-active { animation: stepPulse 2s ease-in-out infinite; }
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up             { animation: fadeUp 0.5s ease-out forwards; }
+.fade-up-delay       { animation: fadeUp 0.5s ease-out 0.15s forwards; opacity: 0; }
+
+/* ============================================================
+   FEATURED PROJECT COMPONENT  (previously inline <style> in FeaturedProject.tsx)
+   ============================================================ */
+
+@keyframes gridPulse {
+    0%, 100% { opacity: 0.03; }
+    50%       { opacity: 0.06; }
+}
+
+@keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes floatSlow {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-12px); }
+}
+
+@keyframes shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.featured-card {
+    position: relative;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.featured-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(196,160,40,0.4), rgba(0,191,203,0.2), rgba(196,160,40,0.1));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 0.5s;
+}
+
+.featured-card:hover::before { opacity: 1; }
+
+.featured-card:hover {
+    box-shadow:
+        0 0 80px rgba(196,160,40,0.08),
+        0 0 160px rgba(196,160,40,0.04),
+        0 30px 80px rgba(0,0,0,0.4);
+    transform: translateY(-4px);
+}
+
+.tag-pill {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.tag-pill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(196,160,40,0.15), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+}
+
+.tag-pill:hover::after  { transform: translateX(100%); }
+.tag-pill:hover {
+    border-color: rgba(196,160,40,0.5);
+    box-shadow: 0 0 20px rgba(196,160,40,0.15);
+}
+
+.cta-featured {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cta-featured::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(196,160,40,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.cta-featured:hover::before { left: 100%; }
+.cta-featured:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(196,160,40,0.25);
+}
+
+.blueprint-grid {
+    background-image:
+        linear-gradient(rgba(196,160,40,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(196,160,40,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    animation: gridPulse 6s ease-in-out infinite;
+}
+
+.mockup-glow { animation: floatSlow 8s ease-in-out infinite; }
+
+/* ============================================================
+   CUSTOM CURSOR  (CSS class for hover state toggled via DOM)
+   ============================================================ */
+
+.cursor-outer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 2rem; height: 2rem;
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    will-change: transform;
+    border: 2px solid white;
+    opacity: 0.5;
+    background: transparent;
+    transition: scale 0.3s ease-out, border-color 0.3s, background-color 0.3s, opacity 0.3s;
+    transform: translate3d(-100px, -100px, 0);
+}
+
+.cursor-outer.cursor-hovering {
+    background-color: white;
+    opacity: 1;
+    border-color: white;
+    scale: 2;
+    transition: scale 0.3s ease-out, border-color 0.3s, background-color 0.3s, opacity 0.3s;
+}
+
+.cursor-inner {
+    position: fixed;
+    top: 0; left: 0;
+    width: 0.5rem; height: 0.5rem;
+    background: white;
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 10000;
+    mix-blend-mode: difference;
+    will-change: transform;
+    opacity: 1;
+    transition: opacity 0.3s;
+    transform: translate3d(-100px, -100px, 0);
+}
+
+.cursor-inner.cursor-hovering { opacity: 0; }
+
+/* ============================================================
+   CONTAIN — isolate heavy sections to limit repaint area
+   ============================================================ */
+
+.section-contain {
+    contain: layout style;
+}
+
+/* ============================================================
+   PREFERS-REDUCED-MOTION — disable all continuous animations
+   for users who prefer reduced motion (accessibility + perf)
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.15ms !important;
+    }
+
+    .animate-marquee { animation: none; }
+    .float-animation,
+    .card-float,
+    .card-float-delayed,
+    .mockup-glow,
+    .animate-pulse-glow { animation: none; }
+
+    .hologram-stage,
+    .orbits path,
+    .emitter { animation: none; }
+}

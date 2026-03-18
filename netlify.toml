@@ -1,0 +1,30 @@
+[build]
+  command   = "npm run build"
+  publish   = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# SPA fallback — all routes serve index.html so React handles routing
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# Long-term cache for hashed assets (JS/CSS chunks, WebP images)
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Short-term cache for HTML entry point
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Cache WebP images for 1 year
+[[headers]]
+  for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

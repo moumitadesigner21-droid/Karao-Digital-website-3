@@ -1,133 +1,184 @@
-
 import React from 'react';
-import { ArrowRight, Zap, Bot, Globe, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Zap, Code2, Bot, Layers } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
+
+const services = [
+  {
+    id: '01',
+    icon: <Zap className="w-6 h-6" />,
+    iconColor: '#00BFCB',
+    accentColor: 'rgba(0,191,203,0.12)',
+    borderColor: 'rgba(0,191,203,0.25)',
+    glowColor: 'rgba(0,191,203,0.15)',
+    title: 'MVP Development',
+    subtitle: 'Functional in 7 Days',
+    description:
+      'We build lean, market-ready Minimum Viable Products that validate your idea before full-scale investment. Focused on core functionality, speed, and clarity — so you can test, iterate, and grow without waste.',
+    points: ['Rapid prototyping', 'Market validation', 'Scalable foundation', 'Agile iteration model'],
+    cta: 'Start Your MVP',
+    large: true,
+  },
+  {
+    id: '02',
+    icon: <Layers className="w-6 h-6" />,
+    iconColor: '#C4A028',
+    accentColor: 'rgba(196,160,40,0.12)',
+    borderColor: 'rgba(196,160,40,0.25)',
+    glowColor: 'rgba(196,160,40,0.15)',
+    title: 'Low-Code & No-Code Solutions',
+    subtitle: '',
+    description:
+      'High-performance web applications built using modern low-code platforms like Framer, Webflow, and scalable backend integrations. Faster development cycles without compromising performance or flexibility.',
+    points: ['Faster launch timelines', 'Cost-efficient development', 'Clean and scalable architecture', 'Easy management post-launch'],
+    cta: 'Explore Solutions',
+    large: false,
+  },
+  {
+    id: '03',
+    icon: <Code2 className="w-6 h-6" />,
+    iconColor: '#00BFCB',
+    accentColor: 'rgba(0,191,203,0.12)',
+    borderColor: 'rgba(0,191,203,0.25)',
+    glowColor: 'rgba(0,191,203,0.15)',
+    title: 'Custom Software Built for Your Business',
+    subtitle: '',
+    description:
+      'When your business needs something beyond templates, we engineer tailored digital systems designed around your operations, workflows, and long-term goals.',
+    points: ['Custom workflows', 'AI integration', 'Secure backend systems', 'Enterprise-ready scalability'],
+    cta: 'Get a Custom Build',
+    large: false,
+  },
+  {
+    id: '04',
+    icon: <Bot className="w-6 h-6" />,
+    iconColor: '#C4A028',
+    accentColor: 'rgba(196,160,40,0.12)',
+    borderColor: 'rgba(196,160,40,0.25)',
+    glowColor: 'rgba(196,160,40,0.15)',
+    title: 'AI Automation for Smarter Operations',
+    subtitle: '',
+    description:
+      'We integrate AI-driven automation systems that reduce manual effort, improve efficiency, and unlock new growth opportunities.',
+    points: ['Workflow automation', 'CRM integrations', 'Intelligent data processing', 'Performance tracking dashboards'],
+    cta: 'Automate Now',
+    large: true,
+  },
+];
+
+const ServiceCard: React.FC<{ service: typeof services[0]; reverse?: boolean }> = ({ service, reverse }) => (
+  <div
+    className="group relative rounded-[2rem] overflow-hidden flex flex-col justify-between transition-all duration-500 hover:-translate-y-1"
+    style={{
+      background: `radial-gradient(ellipse at ${reverse ? 'bottom right' : 'top left'}, ${service.accentColor} 0%, rgba(2,6,23,0.95) 70%)`,
+      border: `1px solid ${service.borderColor}`,
+      boxShadow: `0 0 60px 0 ${service.glowColor}`,
+      padding: '2.5rem',
+      minHeight: service.large ? '460px' : '380px',
+    }}
+  >
+
+    {/* Top row: number + icon */}
+    <div className="flex items-start justify-between relative z-10">
+      <span
+        className="text-6xl font-black tracking-tighter leading-none select-none"
+        style={{ color: service.borderColor }}
+      >
+        {service.id}
+      </span>
+      <div
+        className="w-12 h-12 rounded-2xl flex items-center justify-center"
+        style={{
+          background: service.accentColor,
+          border: `1px solid ${service.borderColor}`,
+        }}
+      >
+        <span style={{ color: service.iconColor }}>{service.icon}</span>
+      </div>
+    </div>
+
+    {/* Middle: title + description */}
+    <div className="relative z-10 mt-6 flex-1">
+      <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-1 leading-tight">
+        {service.title}
+        {service.subtitle && (
+          <span className="block text-lg font-semibold mt-0.5" style={{ color: service.iconColor }}>
+            {service.subtitle}
+          </span>
+        )}
+      </h3>
+      <p className="text-slate-400 text-sm md:text-base leading-relaxed mt-4 max-w-md">
+        {service.description}
+      </p>
+    </div>
+
+    {/* Value points */}
+    <div className="relative z-10 mt-6 grid grid-cols-2 gap-x-4 gap-y-2">
+      {service.points.map((point, i) => (
+        <div key={i} className="flex items-center gap-2">
+          <span
+            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+            style={{ background: service.borderColor }}
+          />
+          <span className="text-slate-300 text-xs font-semibold tracking-wide">{point}</span>
+        </div>
+      ))}
+    </div>
+
+    {/* CTA */}
+    <div className="relative z-10 mt-8">
+      <button
+        className="flex items-center justify-center w-full sm:w-max gap-2 px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 group/btn"
+        style={{
+          background: 'rgba(255,255,255,0.06)',
+          border: `1px solid ${service.borderColor}`,
+          color: '#fff',
+        }}
+        onMouseEnter={e => {
+          (e.currentTarget as HTMLButtonElement).style.background = service.accentColor;
+        }}
+        onMouseLeave={e => {
+          (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.06)';
+        }}
+      >
+        {service.cta}
+        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+      </button>
+    </div>
+  </div>
+);
 
 const Services: React.FC = () => {
+  const revealRef = useScrollReveal<HTMLDivElement>();
   return (
-    <section className="py-24 bg-[#f8fafc] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* New Branding Header based on user snippet */}
-        <div className="text-center mb-20">
-          <h2 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">
-            <span className="text-cyan-500">Your Vision</span> <br />
-            <span className="text-yellow-500">Powered by AI</span>
-          </h2>
-          <div className="flex flex-wrap justify-center gap-4 text-slate-400 font-bold text-sm md:text-lg uppercase tracking-widest">
-            <span>MVP Development</span>
-            <span className="text-slate-200">||</span>
-            <span>AI Automations</span>
-            <span className="text-slate-200">||</span>
-            <span>Low/No-Code Website</span>
-            <span className="text-slate-200">||</span>
-            <span>Custom Software</span>
+    <section id="services" ref={revealRef} className="py-28 bg-[#020617] relative overflow-hidden border-t border-white/5">
+      {/* Background glows — CSS gradients, no GPU compositor layers */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 600px 400px at 25% 0%, rgba(0,191,203,0.07) 0%, transparent 70%), radial-gradient(ellipse 600px 400px at 75% 100%, rgba(196,160,40,0.07) 0%, transparent 70%)' }} />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+        {/* Section header */}
+        <div data-reveal className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-5 border border-white/10 bg-white/5 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#C4A028' }} />
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">What We Build</span>
+            </div>
+            <h2 className="text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
+              Services That <br />
+              <span className="text-[#00BFCB]">Actually</span> <span className="text-[#E8C040]">Deliver</span>
+            </h2>
           </div>
+          <p className="text-slate-400 max-w-sm text-base leading-relaxed">
+            From idea to launch — every service is designed to help you move fast, build smart, and scale with confidence.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:auto-rows-[300px]">
-          
-          {/* MVP Development - Large Tall Card */}
-          <div className="md:col-span-4 md:row-span-2 bg-white rounded-[2.5rem] p-8 flex flex-col justify-between shadow-sm border border-slate-100 group">
-            <div>
-              <div className="w-full aspect-[4/5] rounded-[2rem] overflow-hidden mb-8 shadow-inner">
-                <img 
-                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800" 
-                  alt="Team building MVP" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-              </div>
-              <h4 className="text-2xl font-bold text-slate-900 mb-4 leading-tight">
-                MVP Development <br />
-                <span className="text-cyan-500">functional in 7 days.</span>
-              </h4>
-              <p className="text-slate-500 font-medium leading-relaxed mb-8">
-                We focus on core features that matter. Launch your product to market faster than the competition with our streamlined engineering sprint.
-              </p>
-            </div>
-            <button className="flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-full w-fit font-bold text-sm group/btn hover:bg-cyan-500 transition-colors">
-              Launch MVP
-              <div className="bg-white/20 p-1 rounded-full group-hover/btn:translate-x-1 transition-transform">
-                <ArrowRight className="w-3 h-3" />
-              </div>
-            </button>
-          </div>
-
-          {/* AI Automation - Middle Top Card */}
-          <div className="md:col-span-4 bg-white rounded-[2.5rem] p-8 flex flex-col shadow-sm border border-slate-100 group">
-            <div className="w-full h-32 rounded-2xl overflow-hidden mb-6 relative">
-              <img 
-                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800" 
-                alt="AI Neural Network" 
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-              />
-              <div className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur rounded-lg shadow-sm">
-                <Bot className="w-4 h-4 text-cyan-500" />
-              </div>
-            </div>
-            <h4 className="text-xl font-bold text-slate-900 mb-2">
-              AI Automations <span className="text-slate-400">for business.</span>
-            </h4>
-            <p className="text-slate-400 font-medium text-sm">Automate repetitive tasks and integrate intelligent LLM agents into your existing ecosystem.</p>
-            <div className="mt-auto pt-4 flex items-center gap-2">
-               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-               <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">System Operational</span>
-            </div>
-          </div>
-
-          {/* Low-code/No-code - Top Right Card */}
-          <div className="md:col-span-4 bg-white rounded-[2.5rem] p-8 flex flex-col justify-between shadow-sm border border-slate-100 relative group overflow-hidden">
-             <div className="absolute -top-4 -right-4 w-32 h-32 opacity-5 group-hover:opacity-10 transition-opacity rotate-12">
-                <Globe className="text-cyan-500 w-full h-full" />
-             </div>
-             <div>
-                <span className="text-5xl font-black text-slate-900 tracking-tighter">10X</span>
-                <p className="text-slate-400 font-bold text-sm uppercase tracking-wider mt-2">Scale Speed</p>
-             </div>
-             <div>
-                <h4 className="font-bold text-slate-900 mb-1">Low-Code & No-Code</h4>
-                <p className="text-slate-500 font-medium text-sm leading-relaxed">
-                   High-performance web apps built with Framer, Webflow, and Supabase for maximum scalability and easy management.
-                </p>
-             </div>
-          </div>
-
-          {/* Custom Software - Bottom Wide Card */}
-          <div className="md:col-span-8 bg-white rounded-[2.5rem] p-8 flex flex-col md:flex-row shadow-sm border border-slate-100 group relative overflow-hidden">
-            <div className="flex-1 flex flex-col justify-center pr-0 md:pr-12">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-cyan-50 p-2 rounded-lg">
-                  <ShieldCheck className="w-5 h-5 text-cyan-600" />
-                </div>
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Enterprise Ready</span>
-              </div>
-              <h4 className="text-3xl font-bold text-slate-900 mb-4 leading-tight">
-                Custom Software <span className="text-slate-400">built for unique operational power.</span>
-              </h4>
-              <p className="text-slate-500 font-medium leading-relaxed max-w-sm mb-6">
-                Bespoke digital architecture designed to solve your company's most complex challenges with precision and security.
-              </p>
-              <div className="flex gap-4">
-                 <div className="flex -space-x-2">
-                    {[5, 6, 7].map(i => (
-                      <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-slate-200 overflow-hidden">
-                        <img src={`https://i.pravatar.cc/100?img=${i+20}`} className="w-full h-full object-cover" />
-                      </div>
-                    ))}
-                 </div>
-                 <span className="text-xs font-bold text-slate-400 self-center uppercase tracking-widest">Scalable & Secure</span>
-              </div>
-            </div>
-            <div className="flex-1 mt-8 md:mt-0 relative">
-               <div className="w-full h-full rounded-[2rem] overflow-hidden shadow-lg">
-                  <img 
-                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" 
-                    alt="Custom Dashboard Development" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
-                  />
-               </div>
-               <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-transparent hidden md:block"></div>
-            </div>
-          </div>
-
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div data-reveal><ServiceCard service={services[0]} /></div>
+          <div data-reveal><ServiceCard service={services[1]} reverse /></div>
+          <div data-reveal><ServiceCard service={services[2]} /></div>
+          <div data-reveal><ServiceCard service={services[3]} reverse /></div>
         </div>
       </div>
     </section>

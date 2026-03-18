@@ -1,181 +1,307 @@
-
-import React from 'react';
-import { Rocket, Bot, Layout, Code, Zap, Shield, Cpu, Terminal, BarChart3, Layers } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Zap, ChevronRight } from 'lucide-react';
 
 const Hero: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+
+    if (!containerRef.current) return;
+    const container = containerRef.current;
+
+    // Dynamic import — Three.js loads as a separate async chunk after initial paint
+    let animationFrameId: number;
+    let cleanup: (() => void) | null = null;
+
+    import('three').then((THREE) => {
+      if (!container) return;
+
+      const scene = new THREE.Scene();
+
+      // Setup Fog (using Karao's dark theme: #020617)
+      scene.fog = new THREE.FogExp2(0x020617, 0.0015);
+
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+      camera.position.z = 400;
+
+      // Disable antialias on high-DPI screens where it's less visible — cuts fill rate
+      const isMobile = window.innerWidth < 768;
+      const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      // Cap pixel ratio at 1 on mobile to halve fill rate, 1.5 on desktop
+      renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 1.5));
+
+      // Clear previous before appending if HMR triggers
+      while (container.firstChild) {
+        container.removeChild(container.firstChild);
+      }
+      container.appendChild(renderer.domElement);
+
+      // Mobile: 120 particles (lower O(n²) cost), Desktop: 160
+      const particleCount = isMobile ? 120 : 160;
+      const geometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(particleCount * 3);
+      const colors = new Float32Array(particleCount * 3);
+
+      // Karao digital colors
+      const colorTeal = new THREE.Color(0x00BFCB);
+      const colorGold = new THREE.Color(0xC4A028);
+
+      for (let i = 0; i < particleCount; i++) {
+          const radius = 600 * Math.cbrt(Math.random());
+          const theta = Math.random() * 2 * Math.PI;
+          const phi = Math.acos(2 * Math.random() - 1);
+
+          positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+          positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+          positions[i * 3 + 2] = radius * Math.cos(phi) - 100;
+
+          const mixedColor = colorTeal.clone().lerp(colorGold, Math.random());
+          colors[i * 3] = mixedColor.r;
+          colors[i * 3 + 1] = mixedColor.g;
+          colors[i * 3 + 2] = mixedColor.b;
+      }
+
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const material = new THREE.PointsMaterial({
+          size: 3,
+          vertexColors: true,
+          transparent: true,
+          opacity: 0.8,
+          blending: THREE.AdditiveBlending
+      });
+
+      const particles = new THREE.Points(geometry, material);
+      scene.add(particles);
+
+      const lineMaterial = new THREE.LineBasicMaterial({
+          vertexColors: true,
+          transparent: true,
+          opacity: 0.2,
+          blending: THREE.AdditiveBlending
+      });
+
+      // Pre-allocate fixed-size buffers for lines to avoid GC every frame
+      // Fewer max lines on mobile since there are fewer particles
+      const maxLines = isMobile ? 800 : 1200;
+      const linePositionArray = new Float32Array(maxLines * 6);
+      const lineColorArray = new Float32Array(maxLines * 6);
+      const lineGeometry = new THREE.BufferGeometry();
+      const linePosAttr = new THREE.BufferAttribute(linePositionArray, 3);
+      const lineColAttr = new THREE.BufferAttribute(lineColorArray, 3);
+      linePosAttr.setUsage(THREE.DynamicDrawUsage);
+      lineColAttr.setUsage(THREE.DynamicDrawUsage);
+      lineGeometry.setAttribute('position', linePosAttr);
+      lineGeometry.setAttribute('color', lineColAttr);
+      const linesMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
+      scene.add(linesMesh);
+
+      let mouseX = 0;
+      let mouseY = 0;
+      let targetX = 0;
+      let targetY = 0;
+      const windowHalfX = window.innerWidth / 2;
+      const windowHalfY = window.innerHeight / 2;
+
+      // Throttle mousemove to ~30fps on mobile, ~60fps on desktop
+      let lastMoveTime = 0;
+      const moveThrottle = isMobile ? 33 : 16;
+      const handleMouseMove = (event: MouseEvent) => {
+          const now = Date.now();
+          if (now - lastMoveTime < moveThrottle) return;
+          lastMoveTime = now;
+          mouseX = (event.clientX - windowHalfX) * 0.05;
+          mouseY = (event.clientY - windowHalfY) * 0.05;
+      };
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+      const startTime = performance.now();
+
+      // Pause/resume RAF when Hero scrolls in/out of viewport
+      let isPaused = false;
+
+      const animate = () => {
+          if (isPaused) return;
+          animationFrameId = requestAnimationFrame(animate);
+          const time = (performance.now() - startTime) * 0.0002; // ms → seconds, then × 0.2
+
+          targetX = mouseX * 0.5;
+          targetY = mouseY * 0.5;
+          camera.position.x += (targetX - camera.position.x) * 0.02;
+          camera.position.y += (-targetY - camera.position.y) * 0.02;
+          camera.lookAt(scene.position);
+
+          const posArray = particles.geometry.attributes.position.array as Float32Array;
+          const particleColors = particles.geometry.attributes.color.array as Float32Array;
+
+          particles.rotation.y = time * 0.5;
+          linesMesh.rotation.y = time * 0.5;
+          particles.rotation.z = time * 0.2;
+          linesMesh.rotation.z = time * 0.2;
+
+          // Build lines by updating the pre-allocated buffer in-place
+          let lineCount = 0;
+          // Tighter connection radius → fewer lines, less GPU overdraw
+          const connectionDistSq = isMobile ? 8000 : 10000;
+
+          for (let i = 0; i < particleCount && lineCount < maxLines; i += 2) {
+              const i3 = i * 3;
+              for (let j = i + 1; j < particleCount && lineCount < maxLines; j++) {
+                  const j3 = j * 3;
+                  const dx = posArray[i3] - posArray[j3];
+                  const dy = posArray[i3 + 1] - posArray[j3 + 1];
+                  const dz = posArray[i3 + 2] - posArray[j3 + 2];
+                  const distSq = dx * dx + dy * dy + dz * dz;
+
+                  if (distSq < connectionDistSq) {
+                      const offset = lineCount * 6;
+                      linePositionArray[offset]     = posArray[i3];
+                      linePositionArray[offset + 1] = posArray[i3 + 1];
+                      linePositionArray[offset + 2] = posArray[i3 + 2];
+                      linePositionArray[offset + 3] = posArray[j3];
+                      linePositionArray[offset + 4] = posArray[j3 + 1];
+                      linePositionArray[offset + 5] = posArray[j3 + 2];
+
+                      lineColorArray[offset]     = particleColors[i3];
+                      lineColorArray[offset + 1] = particleColors[i3 + 1];
+                      lineColorArray[offset + 2] = particleColors[i3 + 2];
+                      lineColorArray[offset + 3] = particleColors[j3];
+                      lineColorArray[offset + 4] = particleColors[j3 + 1];
+                      lineColorArray[offset + 5] = particleColors[j3 + 2];
+
+                      lineCount++;
+                  }
+              }
+          }
+
+          lineGeometry.setDrawRange(0, lineCount * 2);
+          linePosAttr.needsUpdate = true;
+          lineColAttr.needsUpdate = true;
+
+          lineMaterial.opacity = 0.1 + Math.sin(time * 5) * 0.05;
+
+          renderer.render(scene, camera);
+      };
+
+      animate();
+
+      // Pause when Hero leaves viewport, resume when it enters
+      const heroSection = container.closest('section');
+      const visibilityObserver = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting && isPaused) {
+              isPaused = false;
+              animate();
+          } else if (!entry.isIntersecting) {
+              isPaused = true;
+              cancelAnimationFrame(animationFrameId);
+          }
+      }, { threshold: 0 });
+      if (heroSection) visibilityObserver.observe(heroSection);
+
+      const handleResize = () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+      };
+      window.addEventListener('resize', handleResize, { passive: true });
+
+      cleanup = () => {
+          window.removeEventListener('mousemove', handleMouseMove);
+          window.removeEventListener('resize', handleResize);
+          cancelAnimationFrame(animationFrameId);
+          visibilityObserver.disconnect();
+          renderer.dispose();
+          geometry.dispose();
+          material.dispose();
+          lineGeometry.dispose();
+          lineMaterial.dispose();
+      };
+    });
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      cleanup?.();
+    };
+  }, []);
+
   return (
-    <section className="relative pt-40 pb-20 overflow-hidden min-h-screen bg-grid-pattern">
-      {/* Dynamic Background Elements */}
-      <div className="absolute top-20 left-[5%] w-[400px] h-[400px] bg-cyan-200/30 blur-[120px] rounded-full -z-10 animate-pulse"></div>
-      <div className="absolute top-40 right-[10%] w-[500px] h-[500px] bg-indigo-100/40 blur-[150px] rounded-full -z-10"></div>
-      <div className="absolute bottom-40 left-[15%] w-[300px] h-[300px] bg-emerald-50/50 blur-[100px] rounded-full -z-10"></div>
+    <section className="relative min-h-screen pt-32 pb-20 overflow-hidden bg-[#020617] flex items-center border-b border-white/5">
+      {/* ThreeJS Container */}
+      <div
+        ref={containerRef}
+        className="absolute inset-0 z-0 pointer-events-none mix-blend-screen opacity-60"
+        style={{
+          maskImage: 'radial-gradient(circle at center, black 40%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 100%)'
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-        {/* Main Heading */}
-        <div className="inline-block px-4 py-1.5 mb-6 border border-cyan-100 bg-cyan-50/50 rounded-full">
-          <span className="text-xs font-bold text-cyan-600 uppercase tracking-widest flex items-center gap-2">
-            <Zap className="w-3 h-3" /> Redefining Digital Engineering
-          </span>
-        </div>
-        
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-8 leading-[1.1] text-slate-900">
-          We Build the <br />
-          <span className="text-gradient-cyan">Future of Business</span>
-        </h1>
-        
-        <p className="max-w-3xl mx-auto text-slate-500 text-lg md:text-xl font-medium mb-12 leading-relaxed">
-          Specializing in <span className="text-slate-900 font-bold underline decoration-cyan-400 decoration-2 underline-offset-4">MVP Development</span>, 
-          AI Automation, and Custom Software. <br className="hidden md:block"/>
-          Karao Digital turns complex problems into scalable digital products.
-        </p>
+      {/* Ambient background gradients to merge visually */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_50%,_rgba(0,191,203,0.06)_0%,_transparent_65%)] z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,_rgba(196,160,40,0.05)_0%,_transparent_55%)] z-0 pointer-events-none" />
 
-        {/* Floating Service Tags */}
-        <div className="flex flex-wrap justify-center gap-3 mb-16 opacity-80">
-          {['MVP Dev', 'AI Agents', 'Low-Code', 'Custom SaaS'].map((tag) => (
-            <span key={tag} className="px-4 py-2 bg-white border border-slate-100 rounded-lg text-sm font-bold text-slate-600 shadow-sm transition-all hover:scale-105 hover:border-cyan-200">
-              #{tag}
-            </span>
-          ))}
-        </div>
+      {/* Hologram Stage — classes defined in index.css */}
+      <div className="hologram-stage hidden lg:block">
+        <div className="stage-floor"></div>
+        <div className="emitter"></div>
+        <div className="light-cone"></div>
+        <svg className="orbits" viewBox="0 0 1200 600">
+            <path d="M 100,300 Q 600,0 1100,300 Q 600,600 100,300"></path>
+            <path d="M 200,300 Q 600,100 1000,300 Q 600,500 200,300"></path>
+        </svg>
+      </div>
 
-        {/* Unique Hero Visual Composition - Laptop Version */}
-        <div className="relative mx-auto max-w-[1000px]">
-          
-          {/* Decorative Floating Card: Automation */}
-          <div className="absolute -left-12 top-0 hidden lg:block animate-bounce z-20" style={{ animationDuration: '4s' }}>
-            <div className="glass-card p-5 rounded-2xl shadow-xl border border-white/80 flex items-center gap-4 text-left">
-              <div className="w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-cyan-200">
-                <Bot className="w-7 h-7" />
-              </div>
-              <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">AI AGENT</p>
-                <p className="text-sm font-bold text-slate-800">Workflow Optimized</p>
-              </div>
-            </div>
+      {/* Foreground Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+        <div className="max-w-2xl">
+          <div className={`inline-flex items-center gap-2 px-4 py-2 mb-8 border border-white/10 bg-white/5 backdrop-blur-md rounded-full shadow-[0_0_15px_rgba(0,191,203,0.15)] transition-all duration-1000 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+            <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#00BFCB' }} />
+            <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">System Initialization :: Online</span>
           </div>
 
-          {/* Decorative Floating Card: MVP Speed */}
-          <div className="absolute -right-12 top-10 hidden lg:block animate-bounce z-20" style={{ animationDuration: '6s' }}>
-            <div className="glass-card p-5 rounded-2xl shadow-xl border border-white/80 flex items-center gap-4 text-left">
-              <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center text-white shadow-lg shadow-yellow-100">
-                <Rocket className="w-7 h-7" />
-              </div>
-              <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">MVP ENGINE</p>
-                <p className="text-sm font-bold text-slate-800">Ready in 4 Weeks</p>
-              </div>
-            </div>
+          <h1 className={`text-5xl md:text-8xl font-extrabold tracking-tight mb-6 leading-[1.05] text-white transition-all duration-1000 delay-100 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+            Crafting the Future <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to right, #00BFCB, #C4A028, #00939E)' }}>of Digital Excellence</span>
+          </h1>
+
+          <p className={`max-w-xl text-slate-400 text-lg md:text-xl font-medium mb-10 leading-relaxed border-l-2 pl-6 transition-all duration-1000 delay-200 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ borderColor: 'rgba(196,160,40,0.5)' }}>
+            Precision. Performance. Perfection.<br />
+            Designed to Lead. Built to Scale.
+          </p>
+
+          <div className={`flex flex-col sm:flex-row gap-4 mb-16 transition-all duration-1000 delay-300 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+            <button className="px-8 py-4 bg-white text-slate-900 rounded-full font-bold transition-all flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_40px_rgba(0,191,203,0.4)] hover:-translate-y-1 hover:bg-[#e0fafb] interactive-element">
+              Initialize Project
+              <ChevronRight className="w-5 h-5" />
+            </button>
+            <button className="px-8 py-4 bg-transparent text-white border border-white/20 rounded-full font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-3 interactive-element">
+              <Zap className="w-5 h-5" style={{ color: '#C4A028' }} />
+              Explore Capabilities
+            </button>
           </div>
 
-          {/* Central Laptop Mockup */}
-          <div className="relative mx-auto max-w-[850px] group">
-            {/* Glow effect behind laptop */}
-            <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[120%] h-[120%] bg-cyan-100/20 blur-[150px] rounded-full -z-10 group-hover:bg-cyan-200/30 transition-all duration-700"></div>
-            
-            {/* Laptop Body */}
-            <div className="relative">
-              {/* Screen Part */}
-              <div className="bg-slate-900 rounded-t-[2rem] p-3 shadow-2xl overflow-hidden">
-                <div className="bg-[#f8fafc] aspect-[16/10] w-full rounded-2xl relative overflow-hidden flex">
-                  
-                  {/* Sidebar Mockup */}
-                  <div className="w-16 h-full bg-slate-950 flex flex-col items-center py-6 gap-6">
-                    <div className="w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center text-white shadow-lg shadow-cyan-500/40">
-                      <Zap className="w-4 h-4" />
-                    </div>
-                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 hover:text-white transition-colors cursor-pointer">
-                      <Layers className="w-4 h-4" />
-                    </div>
-                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 hover:text-white transition-colors cursor-pointer">
-                      <BarChart3 className="w-4 h-4" />
-                    </div>
-                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 hover:text-white transition-colors cursor-pointer">
-                      <Terminal className="w-4 h-4" />
-                    </div>
-                    <div className="mt-auto w-8 h-8 rounded-full border border-white/10 overflow-hidden">
-                      <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100" className="w-full h-full object-cover" />
-                    </div>
-                  </div>
-
-                  {/* Main Screen Content */}
-                  <div className="flex-1 p-8 flex flex-col text-left">
-                    <div className="flex justify-between items-center mb-12">
-                      <h3 className="text-2xl font-black text-slate-900 tracking-tighter">Automated <span className="text-cyan-500">Infrastructure</span></h3>
-                      <div className="flex items-center gap-4">
-                        <span className="text-[10px] font-bold text-emerald-500 flex items-center gap-1 bg-emerald-50 px-2 py-1 rounded">
-                          <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> SYSTEM HEALTH: 99.9%
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-8 flex-1">
-                      {/* Left: Interactive Code/Logic View */}
-                      <div className="bg-slate-950 rounded-2xl p-6 font-mono text-xs shadow-xl border border-slate-800">
-                        <div className="flex gap-1.5 mb-6">
-                          <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
-                          <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
-                          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
-                        </div>
-                        <div className="space-y-1">
-                          <p className="text-cyan-400">async function <span className="text-white">initAgent()</span> {'{'}</p>
-                          <p className="text-slate-500 ml-4">// Processing node clusters...</p>
-                          <p className="text-indigo-400 ml-4">const <span className="text-white">status</span> = await deploy();</p>
-                          <p className="text-emerald-400 ml-4">if <span className="text-white">(status.ok)</span> {'{'}</p>
-                          <p className="text-yellow-400 ml-8">karau.scaleUp(instance_01);</p>
-                          <p className="text-emerald-400 ml-4">{'}'}</p>
-                          <p className="text-white">{'}'}</p>
-                          <div className="pt-4 border-t border-slate-800 mt-4">
-                            <p className="text-[10px] text-slate-500 animate-pulse">_ system deploying to production...</p>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Right: Abstract 3D Tech Visual */}
-                      <div className="relative rounded-2xl overflow-hidden group/viz shadow-xl">
-                         <img 
-                          src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2426&auto=format&fit=crop" 
-                          alt="Digital Architecture" 
-                          className="w-full h-full object-cover grayscale-[0.2] brightness-110 group-hover/viz:scale-110 transition-transform duration-1000"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-indigo-500/10 backdrop-blur-[1px]"></div>
-                        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-cyan-400/50 shadow-[0_0_15px_rgba(34,211,238,0.8)] animate-[bounce_4s_infinite]"></div>
-                        
-                        <div className="absolute bottom-4 left-4 right-4 bg-white/20 backdrop-blur-md p-3 rounded-xl border border-white/20 text-white">
-                           <p className="text-[8px] font-black uppercase tracking-widest opacity-70">Neural Link</p>
-                           <p className="text-[10px] font-bold">Active Sync: Node 0x7F2</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom Case Part of Laptop */}
-              <div className="h-4 bg-slate-700 mx-auto w-full rounded-b-xl relative shadow-2xl">
-                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-1 bg-slate-800 rounded-b-full"></div>
-              </div>
-              <div className="h-2 bg-slate-800 mx-auto w-[92%] rounded-b-3xl opacity-50"></div>
+          <div className={`flex items-center gap-8 border-t border-white/10 pt-8 transition-all duration-1000 delay-500 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+            <div>
+              <p className="text-3xl font-black text-white">99<span style={{ color: '#00BFCB' }}>.9%</span></p>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">Uptime SLA</p>
+            </div>
+            <div className="h-10 w-px bg-white/10" />
+            <div>
+              <p className="text-3xl font-black text-white">10<span style={{ color: '#C4A028' }}>x</span></p>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">Dev Velocity</p>
+            </div>
+            <div className="h-10 w-px bg-white/10 hidden sm:block" />
+            <div className="hidden sm:block">
+              <p className="text-3xl font-black text-white">4<span style={{ color: '#00BFCB' }}>w</span></p>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">MVP Launch</p>
             </div>
           </div>
-
-          {/* Code Snippet Floating Panel */}
-          <div className="absolute -right-16 bottom-0 hidden xl:block animate-pulse">
-            <div className="p-6 bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl text-left font-mono text-xs max-w-[220px]">
-              <div className="flex gap-1.5 mb-3">
-                <div className="w-2 h-2 rounded-full bg-red-400"></div>
-                <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
-                <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-              </div>
-              <p className="text-cyan-400">const</p>
-              <p className="text-white">karauAI = () ={'>'} {'{'}</p>
-              <p className="text-indigo-400 ml-4">optimize(biz);</p>
-              <p className="text-indigo-400 ml-4">scale(saas);</p>
-              <p className="text-white">{'}'};</p>
-            </div>
-          </div>
-
         </div>
       </div>
+
     </section>
   );
 };
