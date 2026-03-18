@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
-import { ExternalLink, Award, Compass, Palette, Monitor, Sparkles, Mic, Globe } from 'lucide-react';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+import { ExternalLink, Award, Compass, Palette, Monitor, Sparkles, Mic, Globe, Brain, Search, Network } from 'lucide-react';
 
 const MSA_TAGS = ['React + Vite', 'Custom Design', 'Responsive', 'SEO Optimized', 'Glassmorphism UI'];
 const MSA_STATS = [
@@ -10,7 +9,6 @@ const MSA_STATS = [
 ];
 
 const CaseStudies: React.FC = () => {
-    const revealRef = useScrollReveal<HTMLDivElement>();
     const sectionRef = useRef<HTMLDivElement>(null);
     const msaShimmerRef = useRef<HTMLDivElement>(null);
 
@@ -24,10 +22,10 @@ const CaseStudies: React.FC = () => {
             <div className="absolute inset-0 pointer-events-none opacity-[0.015]"
                 style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }} />
 
-            <div ref={revealRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
                 {/* Header */}
-                <div data-reveal className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                <div className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
                     <div>
                         <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-5 border border-white/10 bg-white/5 rounded-full">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#00BFCB] animate-pulse" />
@@ -50,7 +48,6 @@ const CaseStudies: React.FC = () => {
 
                     {/* ── CARD 1: MSA Design Studio ── */}
                     <div
-                        data-reveal
                         className="group relative rounded-[2rem] overflow-hidden border border-white/8 transition-all duration-300 hover:-translate-y-1"
                         style={{
                             background: 'linear-gradient(145deg, rgba(15,23,42,0.95) 0%, rgba(10,14,26,0.98) 100%)',
@@ -170,7 +167,7 @@ const CaseStudies: React.FC = () => {
 
 
                     {/* ── CARD 2: Samaan Bol ── */}
-                    <div data-reveal className="group relative rounded-[2rem] overflow-hidden border border-white/8 transition-all duration-300 hover:-translate-y-1"
+                    <div className="group relative rounded-[2rem] overflow-hidden border border-white/8 transition-all duration-300 hover:-translate-y-1"
                         style={{
                             background: 'linear-gradient(145deg, rgba(0,191,203,0.06) 0%, rgba(15,23,42,0.95) 50%)',
                         }}
@@ -244,7 +241,7 @@ const CaseStudies: React.FC = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-wrap gap-3 items-center">
+                                <div className="flex flex-wrap gap-3 items-center relative z-10">
                                     <a href="https://samaan-bol.netlify.app/" target="_blank" rel="noopener noreferrer"
                                         className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-sm font-bold group/btn transition-all"
                                         style={{ background: 'linear-gradient(135deg, rgba(0,191,203,0.12), rgba(0,191,203,0.04))', border: '1px solid rgba(0,191,203,0.35)', color: '#67e8f9' }}>
@@ -254,7 +251,8 @@ const CaseStudies: React.FC = () => {
                                     <div className="flex flex-col gap-1.5">
                                         <a href="https://apps.apple.com/in/app/samaan-bol/id6759739444" target="_blank" rel="noopener noreferrer"
                                             className="inline-flex items-center gap-3 px-7 py-4 rounded-full text-sm font-bold group/appbtn transition-all hover:-translate-y-0.5"
-                                            style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))', border: '1px solid rgba(255,255,255,0.18)', color: '#e2e8f0' }}>
+                                            style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))', border: '1px solid rgba(255,255,255,0.18)', color: '#e2e8f0', position: 'relative', zIndex: 10 }}
+                                            onClick={(e) => { e.preventDefault(); window.open('https://apps.apple.com/in/app/samaan-bol/id6759739444', '_blank', 'noopener,noreferrer'); }}>
                                             <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 814 1000" fill="currentColor">
                                                 <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-37.5-155.5-127.4C46.7 790.7 0 663 0 541.8c0-207.8 135.5-317.9 269.5-317.9 69 0 126.4 45.5 171 45.5 43.1 0 110.7-48 191.1-48 30.6 0 110.7 2.6 168.6 79.7zm-194.3-86.4c31.3-37.5 54.3-89.7 54.3-141.9 0-7.1-.6-14.3-1.9-20.1-51.6 1.9-112.3 34.4-149.3 75.8-28.5 32.4-55.1 84.7-55.1 137.6 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 46.5 0 102.8-31.1 136.5-70.8z"/>
                                             </svg>
@@ -315,9 +313,314 @@ const CaseStudies: React.FC = () => {
                     </div>
 
 
-                    {/* ── CARD 3: Upcoming Project ── */}
+                    {/* ── CARD 3: Insightfully ── */}
+                    <div className="group relative rounded-[2rem] overflow-hidden border border-white/8 transition-all duration-300 hover:-translate-y-1"
+                        style={{ background: 'linear-gradient(145deg, rgba(124,58,237,0.06) 0%, rgba(15,23,42,0.95) 50%)' }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 60px 0 rgba(124,58,237,0.1)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(124,58,237,0.2)'; }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = 'none'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)'; }}
+                    >
+                        <div className="grid lg:grid-cols-5 gap-0">
+                            {/* LEFT: Content */}
+                            <div className="lg:col-span-3 p-8 md:p-10 lg:p-16 flex flex-col justify-between relative z-10">
+                                <div>
+                                    <div className="flex items-center gap-3 mb-8 flex-wrap">
+                                        <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+                                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                                            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Live</span>
+                                        </div>
+                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">Product Research</span>
+                                    </div>
+
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                                            style={{ background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.25)' }}>
+                                            <Brain className="w-6 h-6" style={{ color: '#A78BFA' }} />
+                                        </div>
+                                        <h3 className="text-3xl md:text-5xl font-extrabold text-white leading-tight">
+                                            Insight<span style={{ color: '#A78BFA' }}>fully</span>
+                                        </h3>
+                                    </div>
+
+                                    <p className="text-slate-400 text-sm font-semibold mb-6 flex items-center gap-2">
+                                        <Search className="w-4 h-4" style={{ color: '#A78BFA' }} />
+                                        Turn hours of user interviews into verified insights in minutes
+                                    </p>
+
+                                    <div className="w-20 h-0.5 rounded-full mb-6" style={{ background: 'linear-gradient(90deg, #7C3AED, transparent)' }} />
+
+                                    <p className="text-slate-400 text-base leading-relaxed mb-10 max-w-lg">
+                                        Stop Analyzing, Start Understanding. Built for Every Research Method — for product teams who demand depth, evidence, and speed.
+                                    </p>
+
+                                    <div className="flex flex-wrap gap-8 mb-10">
+                                        {[
+                                            { value: '8', label: 'AI Agents' },
+                                            { value: '7', label: 'Interview Types' },
+                                            { value: '5 min', label: 'Turnaround' },
+                                        ].map((stat, i) => (
+                                            <div key={i} className="relative group/stat">
+                                                <p className="text-3xl md:text-4xl font-black text-white leading-none">{stat.value}</p>
+                                                <p className="text-[10px] font-bold uppercase tracking-[0.2em] mt-1.5" style={{ color: '#A78BFA' }}>{stat.label}</p>
+                                                {i < 2 && <div className="absolute top-0 -right-4 h-full w-px bg-white/8 hidden sm:block" />}
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-2.5 mb-10">
+                                        {['AI Agents', 'User Research', 'Interview Analysis', 'Product Teams', 'Voice AI', 'Insights'].map(tag => (
+                                            <span key={tag} className="tag-pill text-[11px] font-bold px-4 py-1.5 rounded-full uppercase tracking-wider cursor-default"
+                                                style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.2)', color: '#A78BFA' }}>
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-wrap gap-3 items-center relative z-10">
+                                    <a href="https://insightfullyapp.netlify.app/" target="_blank" rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-sm font-bold group/btn transition-all"
+                                        style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.12), rgba(124,58,237,0.04))', border: '1px solid rgba(124,58,237,0.35)', color: '#A78BFA' }}>
+                                        Visit Live Product
+                                        <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* RIGHT: AI Dashboard Visual */}
+                            <div className="lg:col-span-2 relative hidden lg:flex items-center justify-center overflow-hidden p-8">
+                                <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 50% 50%, rgba(124,58,237,0.08) 0%, transparent 70%)' }} />
+                                <div className="mockup-glow relative w-full max-w-[360px] z-10 rounded-2xl overflow-hidden group-hover:-translate-y-2 transition-transform duration-400"
+                                    style={{ border: '1px solid rgba(124,58,237,0.2)', boxShadow: '0 0 60px rgba(124,58,237,0.08), 0 20px 60px rgba(0,0,0,0.5)', background: '#0a0e1a' }}>
+                                    <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5" style={{ background: 'linear-gradient(180deg, rgba(30,41,59,0.95), rgba(20,30,50,0.95))' }}>
+                                        <div className="flex gap-1.5">
+                                            <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+                                            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+                                            <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+                                        </div>
+                                        <div className="flex-1 mx-2">
+                                            <div className="bg-white/5 rounded-md px-3 py-1 text-[9px] text-slate-500 font-mono truncate text-center">insightfullyapp.netlify.app</div>
+                                        </div>
+                                    </div>
+                                    <div className="p-4 space-y-2.5">
+                                        <div className="flex items-center justify-between mb-3">
+                                            <span className="text-[10px] font-bold" style={{ color: '#A78BFA' }}>Research Dashboard</span>
+                                            <span className="text-[8px] px-2 py-0.5 rounded-full text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">● Live</span>
+                                        </div>
+                                        {[
+                                            { label: 'User Interview #1', status: 'Analyzed', pct: 100 },
+                                            { label: 'User Interview #2', status: 'Processing', pct: 65 },
+                                            { label: 'User Interview #3', status: 'Queued', pct: 0 },
+                                        ].map((item, i) => (
+                                            <div key={i} className="rounded-xl p-3" style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.15)' }}>
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <span className="text-[9px] font-semibold text-white/70">{item.label}</span>
+                                                    <span className="text-[8px] font-bold" style={{ color: item.pct === 100 ? '#4ade80' : item.pct > 0 ? '#A78BFA' : 'rgba(255,255,255,0.3)' }}>{item.status}</span>
+                                                </div>
+                                                <div className="h-1 rounded-full bg-white/5">
+                                                    <div className="h-full rounded-full transition-all" style={{ width: `${item.pct}%`, background: item.pct === 100 ? '#4ade80' : 'linear-gradient(90deg, #7C3AED, #A78BFA)' }} />
+                                                </div>
+                                            </div>
+                                        ))}
+                                        <div className="pt-1">
+                                            <p className="text-[8px] text-slate-600 uppercase tracking-widest mb-2 font-bold">Active AI Agents</p>
+                                            <div className="flex gap-1.5 flex-wrap">
+                                                {[...Array(8)].map((_, i) => (
+                                                    <div key={i} className="w-7 h-7 rounded-lg flex items-center justify-center text-[8px] font-bold"
+                                                        style={{ background: i < 3 ? 'rgba(124,58,237,0.2)' : 'rgba(124,58,237,0.07)', border: `1px solid rgba(124,58,237,${i < 3 ? '0.35' : '0.15'})`, color: '#A78BFA' }}>
+                                                        {i + 1}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="absolute top-8 right-8 w-16 h-16 border-t border-r border-[#7C3AED]/10 rounded-tr-xl" />
+                                <div className="absolute bottom-8 left-8 w-16 h-16 border-b border-l border-[#7C3AED]/10 rounded-bl-xl" />
+                                <div className="absolute top-12 left-6 px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider flex items-center gap-1.5"
+                                    style={{ background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.2)', color: '#A78BFA' }}>
+                                    <Brain className="w-3 h-3" /> AI Research
+                                </div>
+                                <div className="absolute bottom-20 right-6 px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider"
+                                    style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(124,58,237,0.2)', color: '#A78BFA' }}>
+                                    5 min Turnaround
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {/* ── CARD 4: JustMeet ── */}
+                    <div className="group relative rounded-[2rem] overflow-hidden border border-white/8 transition-all duration-300 hover:-translate-y-1"
+                        style={{ background: 'linear-gradient(145deg, rgba(245,158,11,0.06) 0%, rgba(15,23,42,0.95) 50%)' }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 60px 0 rgba(245,158,11,0.1)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,158,11,0.2)'; }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = 'none'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)'; }}
+                    >
+                        <div className="grid lg:grid-cols-5 gap-0">
+                            {/* LEFT: Content */}
+                            <div className="lg:col-span-3 p-8 md:p-10 lg:p-16 flex flex-col justify-between relative z-10">
+                                <div>
+                                    <div className="flex items-center gap-3 mb-8 flex-wrap">
+                                        <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+                                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                                            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Live</span>
+                                        </div>
+                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">AI Design Tool</span>
+                                    </div>
+
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                                            style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.25)' }}>
+                                            <Network className="w-6 h-6" style={{ color: '#FCD34D' }} />
+                                        </div>
+                                        <h3 className="text-3xl md:text-5xl font-extrabold text-white leading-tight">
+                                            Just<span style={{ color: '#FCD34D' }}>Meet</span>
+                                        </h3>
+                                    </div>
+
+                                    <p className="text-slate-400 text-sm font-semibold mb-6 flex items-center gap-2">
+                                        <Network className="w-4 h-4 flex-shrink-0" style={{ color: '#F59E0B' }} />
+                                        The Infinite Canvas, That Thinks With You
+                                    </p>
+
+                                    <div className="w-20 h-0.5 rounded-full mb-6" style={{ background: 'linear-gradient(90deg, #F59E0B, transparent)' }} />
+
+                                    <p className="text-slate-400 text-base leading-relaxed mb-10 max-w-lg">
+                                        Stop drawing dead diagrams. JustMeet is the AI pair designer that autocompletes your user flows, checks logic, and refactors messy boards instantly.
+                                    </p>
+
+                                    <div className="flex flex-wrap gap-8 mb-10">
+                                        {[
+                                            { value: '20+', label: 'Auto Complete Journeys' },
+                                            { value: '50+', label: 'Logic Aware Checks' },
+                                            { value: 'Real Time', label: 'Sync' },
+                                        ].map((stat, i) => (
+                                            <div key={i} className="relative group/stat">
+                                                <p className="text-3xl md:text-4xl font-black text-white leading-none">{stat.value}</p>
+                                                <p className="text-[10px] font-bold uppercase tracking-[0.2em] mt-1.5" style={{ color: '#FCD34D' }}>{stat.label}</p>
+                                                {i < 2 && <div className="absolute top-0 -right-4 h-full w-px bg-white/8 hidden sm:block" />}
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-2.5 mb-10">
+                                        {['AI Canvas', 'User Flows', 'Logic Checks', 'Real-Time Sync', 'Infinite Canvas', 'Auto Complete'].map(tag => (
+                                            <span key={tag} className="tag-pill text-[11px] font-bold px-4 py-1.5 rounded-full uppercase tracking-wider cursor-default"
+                                                style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)', color: '#FCD34D' }}>
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-wrap gap-3 items-center relative z-10">
+                                    <a href="https://justmeet-board.netlify.app/" target="_blank" rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-sm font-bold group/btn transition-all"
+                                        style={{ background: 'linear-gradient(135deg, rgba(245,158,11,0.12), rgba(245,158,11,0.04))', border: '1px solid rgba(245,158,11,0.35)', color: '#FCD34D' }}>
+                                        Visit Live Product
+                                        <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* RIGHT: Canvas / Flow Diagram Visual */}
+                            <div className="lg:col-span-2 relative hidden lg:flex items-center justify-center overflow-hidden p-8">
+                                <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 50% 50%, rgba(245,158,11,0.07) 0%, transparent 70%)' }} />
+                                <div className="mockup-glow relative w-full max-w-[360px] z-10 rounded-2xl overflow-hidden group-hover:-translate-y-2 transition-transform duration-400"
+                                    style={{ border: '1px solid rgba(245,158,11,0.2)', boxShadow: '0 0 60px rgba(245,158,11,0.07), 0 20px 60px rgba(0,0,0,0.5)', background: '#0a0e1a' }}>
+                                    {/* Browser chrome */}
+                                    <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5" style={{ background: 'linear-gradient(180deg, rgba(30,41,59,0.95), rgba(20,30,50,0.95))' }}>
+                                        <div className="flex gap-1.5">
+                                            <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+                                            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+                                            <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+                                        </div>
+                                        <div className="flex-1 mx-2">
+                                            <div className="bg-white/5 rounded-md px-3 py-1 text-[9px] text-slate-500 font-mono truncate text-center">justmeet.app</div>
+                                        </div>
+                                    </div>
+                                    {/* Canvas content */}
+                                    <div className="p-4">
+                                        <div className="flex items-center justify-between mb-3">
+                                            <span className="text-[10px] font-bold" style={{ color: '#FCD34D' }}>User Flow Canvas</span>
+                                            <span className="text-[8px] px-2 py-0.5 rounded-full text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">● Live</span>
+                                        </div>
+                                        {/* Flow diagram SVG */}
+                                        <div className="rounded-xl p-3 mb-3 relative overflow-hidden" style={{ background: 'rgba(245,158,11,0.03)', border: '1px solid rgba(245,158,11,0.1)' }}>
+                                            <svg viewBox="0 0 280 120" className="w-full" style={{ height: '120px' }}>
+                                                <defs>
+                                                    <marker id="arrowAmber" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+                                                        <polygon points="0 0, 5 2.5, 0 5" fill="rgba(245,158,11,0.6)" />
+                                                    </marker>
+                                                    <marker id="arrowGreen" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+                                                        <polygon points="0 0, 5 2.5, 0 5" fill="rgba(74,222,128,0.6)" />
+                                                    </marker>
+                                                    <marker id="arrowRed" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+                                                        <polygon points="0 0, 5 2.5, 0 5" fill="rgba(248,113,113,0.6)" />
+                                                    </marker>
+                                                </defs>
+                                                {/* Start node */}
+                                                <rect x="8" y="45" width="56" height="28" rx="6" fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.35)" strokeWidth="1" />
+                                                <text x="36" y="63" textAnchor="middle" fill="#FCD34D" fontSize="7" fontWeight="bold">Start</text>
+                                                {/* Onboarding node — AI highlighted */}
+                                                <rect x="86" y="35" width="66" height="32" rx="7" fill="none" stroke="rgba(252,211,77,0.25)" strokeWidth="2" style={{ filter: 'blur(3px)' }} />
+                                                <rect x="88" y="37" width="62" height="28" rx="6" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.5)" strokeWidth="1.5" />
+                                                <text x="119" y="55" textAnchor="middle" fill="#FCD34D" fontSize="7" fontWeight="bold">Onboarding</text>
+                                                {/* Decision diamond */}
+                                                <polygon points="190,51 205,38 220,51 205,64" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)" strokeWidth="1" />
+                                                <text x="205" y="55" textAnchor="middle" fill="rgba(252,211,77,0.7)" fontSize="5.5" fontWeight="bold">Auth?</text>
+                                                {/* Success node */}
+                                                <rect x="234" y="22" width="42" height="24" rx="5" fill="rgba(74,222,128,0.08)" stroke="rgba(74,222,128,0.25)" strokeWidth="1" />
+                                                <text x="255" y="38" textAnchor="middle" fill="#4ade80" fontSize="6" fontWeight="bold">Home</text>
+                                                {/* Error node */}
+                                                <rect x="234" y="72" width="42" height="24" rx="5" fill="rgba(248,113,113,0.08)" stroke="rgba(248,113,113,0.25)" strokeWidth="1" />
+                                                <text x="255" y="88" textAnchor="middle" fill="#f87171" fontSize="6" fontWeight="bold">Login</text>
+                                                {/* Arrows */}
+                                                <line x1="64" y1="59" x2="87" y2="51" stroke="rgba(245,158,11,0.4)" strokeWidth="1" markerEnd="url(#arrowAmber)" />
+                                                <line x1="150" y1="51" x2="188" y2="51" stroke="rgba(245,158,11,0.4)" strokeWidth="1" markerEnd="url(#arrowAmber)" />
+                                                <line x1="220" y1="45" x2="233" y2="35" stroke="rgba(74,222,128,0.4)" strokeWidth="1" markerEnd="url(#arrowGreen)" />
+                                                <line x1="220" y1="57" x2="233" y2="79" stroke="rgba(248,113,113,0.4)" strokeWidth="1" markerEnd="url(#arrowRed)" />
+                                            </svg>
+                                            {/* AI cursor indicator */}
+                                            <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 rounded-full"
+                                                style={{ background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)' }}>
+                                                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#F59E0B' }} />
+                                                <span className="text-[7px] font-bold" style={{ color: '#FCD34D' }}>AI</span>
+                                            </div>
+                                        </div>
+                                        {/* AI suggestions panel */}
+                                        <div className="space-y-1.5">
+                                            <p className="text-[8px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">AI Suggestions</p>
+                                            {[
+                                                { label: 'Add "Profile Setup" step after Login', confidence: 92 },
+                                                { label: 'Merge duplicate Auth paths', confidence: 87 },
+                                            ].map((s, i) => (
+                                                <div key={i} className="flex items-center justify-between rounded-lg px-2.5 py-2"
+                                                    style={{ background: 'rgba(245,158,11,0.05)', border: '1px solid rgba(245,158,11,0.12)' }}>
+                                                    <span className="text-[8px] text-white/60 flex-1 pr-2">{s.label}</span>
+                                                    <span className="text-[8px] font-bold flex-shrink-0" style={{ color: '#FCD34D' }}>{s.confidence}%</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* Corner decorations */}
+                                <div className="absolute top-8 right-8 w-16 h-16 border-t border-r border-[#F59E0B]/10 rounded-tr-xl" />
+                                <div className="absolute bottom-8 left-8 w-16 h-16 border-b border-l border-[#F59E0B]/10 rounded-bl-xl" />
+                                <div className="absolute top-12 left-6 px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider flex items-center gap-1.5"
+                                    style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)', color: '#FCD34D' }}>
+                                    <Network className="w-3 h-3" /> AI Canvas
+                                </div>
+                                <div className="absolute bottom-20 right-6 px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider"
+                                    style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(245,158,11,0.2)', color: '#FCD34D' }}>
+                                    Real-Time Sync
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {/* ── CARD 4: Upcoming Project ── */}
                     <div
-                        data-reveal
                         className="group relative rounded-[2rem] overflow-hidden border border-white/8 transition-all duration-300 hover:-translate-y-1"
                         style={{ background: 'linear-gradient(145deg, rgba(0,191,203,0.07) 0%, rgba(10,14,26,0.98) 60%)' }}
                         onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 80px 0 rgba(0,191,203,0.12)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,191,203,0.22)'; }}
@@ -335,10 +638,10 @@ const CaseStudies: React.FC = () => {
                             {/* LEFT: Content */}
                             <div className="lg:col-span-3 p-8 md:p-10 lg:p-16 flex flex-col justify-between relative z-10 overflow-hidden">
 
-                                {/* Background "03" numeral */}
+                                {/* Background "04" numeral */}
                                 <div className="absolute -right-6 top-1/2 -translate-y-1/2 text-[200px] font-black leading-none select-none pointer-events-none"
                                     style={{ color: 'rgba(0,191,203,0.035)', letterSpacing: '-0.05em' }}>
-                                    03
+                                    05
                                 </div>
 
                                 <div>

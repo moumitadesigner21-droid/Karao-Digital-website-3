@@ -37,7 +37,7 @@ const App: React.FC = () => {
         <LazySection height="1000px"><Services /></LazySection>
         <LazySection height="900px"><Process /></LazySection>
         <div id="case-studies-anchor" />
-        <LazySection height="1800px"><CaseStudies /></LazySection>
+        <LazySection height="4500px"><CaseStudies /></LazySection>
         <LazySection height="900px"><Testimonials /></LazySection>
       </main>
       <Suspense fallback={null}>
