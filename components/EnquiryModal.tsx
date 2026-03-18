@@ -149,48 +149,67 @@ const EnquiryModal: React.FC<Props> = ({ isOpen, enquiryType, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    /* Backdrop */
+    /*
+     * Backdrop — overflow-y-auto so the panel is reachable on extremely
+     * small screens where even 90 dvh is tight (e.g. landscape mobile).
+     * items-end on mobile → bottom-sheet feel; items-center on sm+.
+     */
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center
+                 overflow-y-auto p-0 sm:p-6"
       style={{ background: 'rgba(2,6,23,0.88)', backdropFilter: 'blur(8px)' }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
-      {/* Panel */}
+      {/*
+       * Panel — flex column so we can split scrollable body from sticky footer.
+       * NO overflow-hidden on the outer shell (it would clip the scroll).
+       * max-height uses dvh (dynamic viewport height) so the browser chrome
+       * on mobile is accounted for; falls back to svh then vh.
+       */}
       <div
-        className="relative w-full max-w-lg rounded-3xl overflow-hidden"
+        className="relative w-full sm:max-w-lg flex flex-col
+                   rounded-t-3xl sm:rounded-3xl"
         style={{
           background: 'linear-gradient(135deg, #0f172a 60%, #1a1040 100%)',
           border: '1px solid rgba(0,191,203,0.2)',
           boxShadow: '0 0 100px rgba(0,191,203,0.12), 0 25px 60px rgba(0,0,0,0.6)',
-          maxHeight: '90vh',
-          overflowY: 'auto',
+          maxHeight: 'min(90dvh, 90svh, 90vh)',
         }}
       >
-        {/* Glow accent */}
+        {/* Glow accent — clipped to panel top-right, no overflow needed */}
         <div
-          className="absolute top-0 right-0 w-64 h-64 pointer-events-none"
+          className="absolute top-0 right-0 w-64 h-64 pointer-events-none rounded-tr-3xl"
           style={{
             background: 'radial-gradient(circle at top right, rgba(0,191,203,0.12) 0%, transparent 70%)',
+            overflow: 'hidden',
           }}
         />
 
-        {/* Close button */}
+        {/* Close button — sticky at top, always visible */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full flex items-center
+                     justify-center text-slate-400 hover:text-white transition-colors"
           style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
           aria-label="Close"
         >
           <X className="w-4 h-4" />
         </button>
 
-        <div className="p-7 sm:p-8 relative z-10">
-          {status === 'success' ? (
-            <SuccessView name={form.name} />
-          ) : (
-            <>
+        {status === 'success' ? (
+          <SuccessView name={form.name} />
+        ) : (
+          /*
+           * Form is the flex column host so the submit footer stays outside
+           * the scroll region and is always visible.
+           */
+          <form onSubmit={handleSubmit} noValidate className="flex flex-col min-h-0 flex-1">
+
+            {/* ── Scrollable content ── */}
+            <div className="flex-1 overflow-y-auto overscroll-contain px-7 pt-7 pb-2 sm:px-8 sm:pt-8 relative z-10">
+
               {/* Header */}
-              <div className="mb-7">
+              <div className="mb-6 pr-8">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-4 border border-white/10 bg-white/5 rounded-full">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#00BFCB] animate-pulse" />
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
@@ -206,8 +225,8 @@ const EnquiryModal: React.FC<Props> = ({ isOpen, enquiryType, onClose }) => {
                 </p>
               </div>
 
-              {/* Form */}
-              <form onSubmit={handleSubmit} noValidate className="space-y-4">
+              {/* Fields */}
+              <div className="space-y-4">
                 <Field label="Full Name" error={errors.name}>
                   <input
                     ref={firstInputRef}
@@ -259,36 +278,48 @@ const EnquiryModal: React.FC<Props> = ({ isOpen, enquiryType, onClose }) => {
                     Something went wrong. Please try again.
                   </div>
                 )}
+              </div>
+            </div>
 
-                <button
-                  type="submit"
-                  disabled={status === 'submitting'}
-                  className="w-full mt-1 flex items-center justify-center gap-2.5 py-3.5 rounded-full text-sm font-bold text-white transition-all duration-300 disabled:opacity-60 hover:brightness-110 active:scale-[0.98]"
-                  style={{
-                    background: 'linear-gradient(90deg, #00BFCB 0%, #0098a6 100%)',
-                    boxShadow: '0 0 30px rgba(0,191,203,0.25)',
-                  }}
-                >
-                  {status === 'submitting' ? (
-                    <>
-                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Sending…
-                    </>
-                  ) : (
-                    <>
-                      Send Enquiry
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
-                </button>
+            {/* ── Sticky submit footer — never scrolls away ── */}
+            <div
+              className="px-7 pt-4 pb-7 sm:px-8 sm:pb-8 flex-shrink-0 relative z-10"
+              style={{
+                borderTop: '1px solid rgba(255,255,255,0.06)',
+                background: 'linear-gradient(to bottom, rgba(15,23,42,0.6) 0%, #0f172a 30%)',
+              }}
+            >
+              <button
+                type="submit"
+                disabled={status === 'submitting'}
+                className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-full
+                           text-sm font-bold text-white transition-all duration-300
+                           disabled:opacity-60 hover:brightness-110 active:scale-[0.98]"
+                style={{
+                  background: 'linear-gradient(90deg, #00BFCB 0%, #0098a6 100%)',
+                  boxShadow: '0 0 30px rgba(0,191,203,0.25)',
+                }}
+              >
+                {status === 'submitting' ? (
+                  <>
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Sending…
+                  </>
+                ) : (
+                  <>
+                    Send Enquiry
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
 
-                <p className="text-center text-slate-600 text-[10px] mt-2">
-                  By submitting, you agree to be contacted by Karao.Digital.
-                </p>
-              </form>
-            </>
-          )}
-        </div>
+              <p className="text-center text-slate-600 text-[10px] mt-3">
+                By submitting, you agree to be contacted by Karao.Digital.
+              </p>
+            </div>
+
+          </form>
+        )}
       </div>
     </div>
   );
