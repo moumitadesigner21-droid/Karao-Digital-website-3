@@ -252,7 +252,7 @@ const CaseStudies: React.FC = () => {
                                         <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                                     </a>
                                     <div className="flex flex-col gap-1.5">
-                                        <a href="https://apps.apple.com/app/samaan-bol" target="_blank" rel="noopener noreferrer"
+                                        <a href="https://apps.apple.com/in/app/samaan-bol/id6759739444" target="_blank" rel="noopener noreferrer"
                                             className="inline-flex items-center gap-3 px-7 py-4 rounded-full text-sm font-bold group/appbtn transition-all hover:-translate-y-0.5"
                                             style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))', border: '1px solid rgba(255,255,255,0.18)', color: '#e2e8f0' }}>
                                             <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 814 1000" fill="currentColor">
